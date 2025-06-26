@@ -1,14 +1,21 @@
-FROM node:latest as builder
+FROM node:18-alpine
 
-RUN mkdir /build
+WORKDIR /app
 
-WORKDIR /build
+# Copy package files
+COPY package*.json ./
 
+# Install dependencies
+RUN npm install
 
-COPY  . .
+# Copy source code
+COPY . .
 
+# Build the application
 RUN npm run build
 
-FROM nginx:latest
+# Expose port
+EXPOSE 3000
 
-COPY --from=builder /build/build/. /usr/share/nginx/html/
+# Serve the built application
+CMD ["npx", "serve", "-s", "build", "-l", "3000"]

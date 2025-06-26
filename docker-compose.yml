@@ -1,0 +1,11 @@
+services:
+  react:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: react-keycloak
+    ports:
+      - "3001:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production

@@ -105,7 +105,7 @@ function App() {
               label='Send HTTP Request'
               severity="success" />
 
-            <Button onClick={() => { kc.logout({ redirectUri: 'http://localhost:3000/' }) }}
+            <Button onClick={() => { kc.logout({ redirectUri: 'http://localhost:3001/' }) }}
               className="m-1 custom-btn-style"
               label='Logout'
               severity="danger" />
