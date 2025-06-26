@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/primereact.min.css";
-import '/node_modules/primeflex/primeflex.css'
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.min.css';
+import '/node_modules/primeflex/primeflex.css';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { httpClient } from './HttpClient';
@@ -15,8 +15,8 @@ import Keycloak from 'keycloak-js';
 let initOptions = {
   url: 'http://keycloak.test/',
   realm: 'react-symfony-realm',
-  clientId: 'react-client2',
-}
+  clientId: 'react-client2'
+};
 
 let kc = new Keycloak(initOptions);
 
@@ -29,7 +29,7 @@ kc.init({
     window.location.reload();
   } else {
     /* Remove below logs if you are using this on production */
-    // console.info("Authenticated");
+    // console.info('Authenticated');
     // console.log('auth', auth)
     // console.log('Keycloak', kc)
     // console.log('Access Token', kc.token)
@@ -39,12 +39,11 @@ kc.init({
     httpClient.defaults.headers.common['Authorization'] = `Bearer ${kc.token}`;
 
     kc.onTokenExpired = () => {
-      console.log('token expired')
-    }
+      console.log('token expired');
+    };
   }
 }, () => {
-  /* Notify the user if necessary */
-  console.error("Authentication Failed");
+  console.error('Authentication Failed');
 });
 
 function App() {
@@ -53,8 +52,7 @@ function App() {
 
   /* To demonstrate : http client adds the access token to the Authorization header */
   const callBackend = () => {
-    httpClient.get('https://mockbin.com/request')
-
+    httpClient.get('https://mockbin.com/request');
   };
 
   return (
@@ -72,31 +70,31 @@ function App() {
         <div className='col-1'></div>
         <div className='col-2'>
           <div className="col">
-            <Button onClick={() => { setInfoMessage(kc.authenticated ? 'Authenticated: TRUE' : 'Authenticated: FALSE') }}
+            <Button onClick={() => { setInfoMessage(kc.authenticated ? 'Authenticated: TRUE' : 'Authenticated: FALSE') ;}}
               className="m-1 custom-btn-style"
               label='Is Authenticated' />
 
-            <Button onClick={() => { kc.login() }}
+            <Button onClick={() => { kc.login();}}
               className='m-1 custom-btn-style'
               label='Login'
               severity="success" />
 
-            <Button onClick={() => { setInfoMessage(kc.token) }}
+            <Button onClick={() => { setInfoMessage(kc.token);}}
               className="m-1 custom-btn-style"
               label='Show Access Token'
               severity="info" />
 
-            <Button onClick={() => { setInfoMessage(JSON.stringify(kc.tokenParsed)) }}
+            <Button onClick={() => { setInfoMessage(JSON.stringify(kc.tokenParsed)); }}
               className="m-1 custom-btn-style"
               label='Show Parsed Access token'
               severity="warning" />
 
-            <Button onClick={() => { setInfoMessage(kc.isTokenExpired(5).toString()) }}
+            <Button onClick={() => { setInfoMessage(kc.isTokenExpired(5).toString()); }}
               className="m-1 custom-btn-style"
               label='Check Token expired'
               severity="info" />
 
-            <Button onClick={() => { kc.updateToken(10).then((refreshed) => { setInfoMessage('Token Refreshed: ' + refreshed.toString()) }, (e) => { setInfoMessage('Refresh Error') }) }}
+            <Button onClick={() => { kc.updateToken(10).then((refreshed) => { setInfoMessage('Token Refreshed: ' + refreshed.toString()); }, () => { setInfoMessage('Refresh Error'); }) ;}}
               className="m-1 custom-btn-style"
               label='Update Token (if about to expire)' />  {/** 10 seconds */}
 
@@ -105,17 +103,17 @@ function App() {
               label='Send HTTP Request'
               severity="success" />
 
-            <Button onClick={() => { kc.logout({ redirectUri: 'http://localhost:3001/' }) }}
+            <Button onClick={() => { kc.logout({ redirectUri: 'http://localhost:3001/' }); }}
               className="m-1 custom-btn-style"
               label='Logout'
               severity="danger" />
 
-            <Button onClick={() => { setInfoMessage(kc.hasRealmRole('admin').toString()) }}
+            <Button onClick={() => { setInfoMessage(kc.hasRealmRole('admin').toString()); }}
               className="m-1 custom-btn-style"
               label='has realm role "Admin"'
               severity="info" />
 
-            <Button onClick={() => { setInfoMessage(kc.hasResourceRole('test').toString()) }}
+            <Button onClick={() => { setInfoMessage(kc.hasResourceRole('test').toString()) ;}}
               className="m-1 custom-btn-style"
               label='has client role "test"'
               severity="info" />

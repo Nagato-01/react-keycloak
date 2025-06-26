@@ -4,4 +4,4 @@ const httpClient = axios.create({
 
 });
 
-export {httpClient}
+export { httpClient  };

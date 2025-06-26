@@ -22,13 +22,11 @@ module.exports = {
     'react-hooks'
   ],
   rules: {
-    // Règles de base - pas trop strictes pour un projet de présentation
-    'no-console': 'warn',
+    // 'no-console': 'warn',
     'no-unused-vars': 'warn',
     'no-undef': 'error',
-    // Règles React
-    'react/react-in-jsx-scope': 'off', // React 17+ n'a plus besoin d'importer React
-    'react/prop-types': 'off', // Désactivé pour simplifier
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off',
     'react/display-name': 'off',
     // Règles de style simples
     'quotes': ['warn', 'single'],
