@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import './App.css';
+// import './App.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
-import '/node_modules/primeflex/primeflex.css';
+import 'primeflex/primeflex.css'; // ✅ Corrigé : suppression du chemin absolu
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { httpClient } from './HttpClient';
@@ -70,16 +70,16 @@ function App() {
         <div className='col-1'></div>
         <div className='col-2'>
           <div className="col">
-            <Button onClick={() => { setInfoMessage(kc.authenticated ? 'Authenticated: TRUE' : 'Authenticated: FALSE') ;}}
+            <Button onClick={() => { setInfoMessage(kc.authenticated ? 'Authenticated: TRUE' : 'Authenticated: FALSE'); }}
               className="m-1 custom-btn-style"
               label='Is Authenticated' />
 
-            <Button onClick={() => { kc.login();}}
+            <Button onClick={() => { kc.login(); }}
               className='m-1 custom-btn-style'
               label='Login'
               severity="success" />
 
-            <Button onClick={() => { setInfoMessage(kc.token);}}
+            <Button onClick={() => { setInfoMessage(kc.token); }}
               className="m-1 custom-btn-style"
               label='Show Access Token'
               severity="info" />
@@ -94,7 +94,7 @@ function App() {
               label='Check Token expired'
               severity="info" />
 
-            <Button onClick={() => { kc.updateToken(10).then((refreshed) => { setInfoMessage('Token Refreshed: ' + refreshed.toString()); }, () => { setInfoMessage('Refresh Error'); }) ;}}
+            <Button onClick={() => { kc.updateToken(10).then((refreshed) => { setInfoMessage('Token Refreshed: ' + refreshed.toString()); }, () => { setInfoMessage('Refresh Error'); }); }}
               className="m-1 custom-btn-style"
               label='Update Token (if about to expire)' />  {/** 10 seconds */}
 
@@ -113,7 +113,7 @@ function App() {
               label='has realm role "Admin"'
               severity="info" />
 
-            <Button onClick={() => { setInfoMessage(kc.hasResourceRole('test').toString()) ;}}
+            <Button onClick={() => { setInfoMessage(kc.hasResourceRole('test').toString()); }}
               className="m-1 custom-btn-style"
               label='has client role "test"'
               severity="info" />
@@ -130,12 +130,8 @@ function App() {
 
         <div className='col-2'></div>
       </div>
-
-
-
     </div>
   );
 }
-
 
 export default App;
