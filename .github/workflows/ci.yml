@@ -27,7 +27,7 @@ jobs:
     #   run: npm test -- --coverage --watchAll=false
       
     # - name: Upload coverage to Codecov
-    #   uses: codecov/codecov-action@v3
+    #   uses: codecov/codecov-action@v4
     #   with:
     #     file: ./coverage/lcov.info
     #     fail_ci_if_error: false
@@ -52,7 +52,7 @@ jobs:
       run: npm run lint --if-present || npx eslint src/ --ext .js,.jsx,.ts,.tsx
       
     - name: ESLint Report
-      uses: ataylorme/eslint-annotate-action@v2
+      uses: ataylorme/eslint-annotate-action@v3
       if: failure()
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
@@ -79,7 +79,7 @@ jobs:
       run: npm run build
       
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: build-files
         path: build/
