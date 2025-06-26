@@ -1,0 +1,84 @@
+name: CD React
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      PROJECT_NAME: react
+      FOLDER_PROJET: /opt
+      ENVIRONMENT: prod
+    
+    steps:
+    - name: Checkout main branch
+      uses: actions/checkout@v4
+      with:
+        ref: main
+        
+    - name: Charger la clé SSH
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies and build
+      run: |
+        npm ci
+        npm run build
+        
+    - name: Transfer files using rsync
+      run: |
+        rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" \
+          --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r \
+          --exclude='.git' --exclude='.github' --exclude='node_modules' \
+          --exclude='.env.local' --exclude='.env.development' \
+          ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ env.FOLDER_PROJET }}/${{ env.PROJECT_NAME }}/
+          
+    - name: Transfer .env file to VPS
+      run: |
+        scp -o StrictHostKeyChecking=no .env ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ env.FOLDER_PROJET }}/${{ env.PROJECT_NAME }}/
+        
+    - name: Execute remote deployment commands
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          set -e
+          cd ${{ env.FOLDER_PROJET }}/${{ env.PROJECT_NAME }}
+
+          echo "Contenu du fichier .env sur le serveur :"
+          cat .env
+          
+          echo "Arrêt des conteneurs existants..."
+          docker compose down || true
+          
+          echo "Nettoyage des réseaux et images inutiles..."
+          docker network prune -f --filter "until=24h"
+          docker image prune -f --filter "until=24h"
+          
+          echo "Build de la nouvelle image..."
+          docker compose build --no-cache
+          
+          echo "Démarrage du nouveau conteneur..."
+          docker compose up -d
+          
+          echo "Attente du démarrage complet..."
+          sleep 15
+          
+          echo "Health check..."
+          curl -f http://localhost:3000 || exit 1
+          
+          echo "✅ Déploiement réussi!"
+        EOF

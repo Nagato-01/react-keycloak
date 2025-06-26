@@ -1,0 +1,17 @@
+# Dossiers à ignorer
+node_modules/
+build/
+dist/
+coverage/
+
+# Fichiers générés
+*.min.js
+*.bundle.js
+
+# Configuration
+public/
+.env*
+
+# Tests (optionnel si vous voulez linter les tests)
+# src/**/*.test.js
+# src/**/*.spec.js
