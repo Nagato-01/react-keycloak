@@ -12,7 +12,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
+    # environment: production
     env:
       PROJECT_NAME: react
       FOLDER_PROJET: /opt
@@ -80,5 +80,5 @@ jobs:
           echo "Health check..."
           curl -f http://localhost:3000 || exit 1
           
-          echo "✅ Déploiement réussi!"
+          echo "✅ Déploiement réussi !"
         EOF
