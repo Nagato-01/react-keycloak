@@ -31,7 +31,7 @@ jobs:
     #   with:
     #     file: ./coverage/lcov.info
     #     fail_ci_if_error: false
-
+  
   eslint:
     runs-on: ubuntu-latest
     
@@ -65,7 +65,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+    
+    - name: sonarqube
+      uses: SonarSource/sonarqube-scan-action@v5
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
